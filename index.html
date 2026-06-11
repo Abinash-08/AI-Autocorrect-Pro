@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AI Autocorrect Pro — Write Smarter with AI</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/static/css/style.css" />
+  <!-- jsPDF for PDF export -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+</head>
+<body>
+
+<!-- Animated Background -->
+<div class="bg-wrap">
+  <div class="blob blob-1"></div>
+  <div class="blob blob-2"></div>
+  <div class="blob blob-3"></div>
+  <div class="grid-lines"></div>
+</div>
+
+<!-- Navbar -->
+<nav class="navbar" id="navbar">
+  <div class="nav-inner">
+    <div class="logo">
+      <span class="logo-icon">✦</span>
+      <span class="logo-text">AI Autocorrect <span class="logo-pro">Pro</span></span>
+    </div>
+    <div class="nav-links">
+      <a href="#tool">Tool</a>
+      <a href="#features">Features</a>
+      <a href="#dashboard">Stats</a>
+    </div>
+    <div class="nav-actions">
+      <button class="theme-toggle" id="themeToggle" title="Toggle dark mode">
+        <span class="theme-icon">🌙</span>
+      </button>
+      <button class="nav-cta" onclick="document.getElementById('tool').scrollIntoView({behavior:'smooth'})">
+        Try Free →
+      </button>
+    </div>
+  </div>
+</nav>
+
+<!-- Hero -->
+<section class="hero" id="home">
+  <div class="hero-content">
+    <div class="hero-badge fade-in">
+      <span class="badge-dot"></span> Powered by Advanced AI
+    </div>
+    <h1 class="hero-title fade-in">
+      Write Smarter<br/>
+      <span class="gradient-text">with AI</span>
+    </h1>
+    <p class="hero-sub fade-in">
+      Instantly fix spelling, grammar, punctuation, and improve sentence clarity<br/>
+      using Artificial Intelligence. Professional writing, effortlessly.
+    </p>
+    <div class="hero-btns fade-in">
+      <button class="btn-primary ripple" onclick="document.getElementById('tool').scrollIntoView({behavior:'smooth'})">
+        Start Correcting Free
+      </button>
+      <button class="btn-ghost" onclick="document.getElementById('features').scrollIntoView({behavior:'smooth'})">
+        See Features ↓
+      </button>
+    </div>
+    <div class="hero-stats fade-in">
+      <div class="hstat"><strong>10M+</strong><span>Words Fixed</span></div>
+      <div class="hstat-div"></div>
+      <div class="hstat"><strong>99.2%</strong><span>Accuracy</span></div>
+      <div class="hstat-div"></div>
+      <div class="hstat"><strong>0.3s</strong><span>Avg Speed</span></div>
+    </div>
+  </div>
+  <div class="hero-visual fade-in">
+    <div class="floating-card fc1">
+      <span>✓</span> Grammar Fixed
+    </div>
+    <div class="floating-card fc2">
+      <span>✦</span> AI Powered
+    </div>
+    <div class="floating-card fc3">
+      <span>⚡</span> Instant
+    </div>
+  </div>
+</section>
+
+<!-- Main Tool Section -->
+<section class="tool-section" id="tool">
+  <div class="section-label">THE TOOL</div>
+  <h2 class="section-title">Autocorrect <span class="gradient-text">Engine</span></h2>
+  <p class="section-sub">Paste your text below and let AI do the heavy lifting</p>
+
+  <div class="tool-wrap">
+    <!-- Input Card -->
+    <div class="tool-card glass-card input-card">
+      <div class="card-header">
+        <div class="card-title">
+          <span class="card-icon">✏️</span> Your Text
+        </div>
+        <div class="input-meta">
+          <span class="word-count" id="wordCount">0 words</span>
+          <span class="char-count" id="charCount">0 / 5000</span>
+        </div>
+      </div>
+
+      <div class="textarea-wrap">
+        <textarea
+          id="inputText"
+          class="main-textarea"
+          placeholder="Type or paste your text here... Try: 'i cant beleive how gud this tool is, its amazeing!!'"
+          maxlength="5000"
+          spellcheck="false"
+        ></textarea>
+        <div class="drag-hint" id="dragHint">📂 Drop a .txt file here</div>
+      </div>
+
+      <!-- Toolbar -->
+      <div class="toolbar">
+        <div class="toolbar-left">
+          <button class="tool-btn" id="pasteBtn" title="Paste (Ctrl+V)">
+            📋 Paste
+          </button>
+          <button class="tool-btn" id="voiceBtn" title="Voice input">
+            🎙️ Voice
+          </button>
+          <button class="tool-btn" id="clearBtn" title="Clear (Ctrl+Del)">
+            🗑️ Clear
+          </button>
+        </div>
+        <div class="toolbar-right">
+          <div class="speed-badge" id="speedBadge" title="Typing speed">
+            ⌨️ <span id="wpmDisplay">0</span> WPM
+          </div>
+          <div class="reading-badge" id="readingBadge">
+            📖 <span id="readTime">0s</span> read
+          </div>
+        </div>
+      </div>
+
+      <button class="correct-btn ripple" id="correctBtn">
+        <span class="btn-text">✦ Correct Text</span>
+        <span class="btn-shortcut">Ctrl+Enter</span>
+      </button>
+    </div>
+
+    <!-- Output Card -->
+    <div class="tool-card glass-card output-card" id="outputCard">
+      <div class="output-placeholder" id="outputPlaceholder">
+        <div class="placeholder-icon">✦</div>
+        <p>Your corrected text will appear here</p>
+        <p class="placeholder-sub">Corrections will be highlighted in green</p>
+      </div>
+
+      <div class="output-content" id="outputContent" style="display:none">
+        <div class="card-header">
+          <div class="card-title">
+            <span class="card-icon">✅</span> Corrected Text
+          </div>
+          <div class="score-badge" id="scoreBadge">
+            <span id="scoreVal">100</span>/100
+          </div>
+        </div>
+
+        <div class="corrections-meta" id="correctionsMeta">
+          <span class="meta-chip mistakes" id="mistakesChip">0 corrections</span>
+          <span class="meta-chip">Original preserved</span>
+        </div>
+
+        <div class="diff-section">
+          <div class="diff-label">Corrected:</div>
+          <div class="corrected-text" id="correctedText"></div>
+        </div>
+
+        <div class="diff-section original-section">
+          <div class="diff-label">Original:</div>
+          <div class="original-text" id="originalText"></div>
+        </div>
+
+        <div class="changes-list" id="changesList"></div>
+
+        <!-- Output actions -->
+        <div class="output-actions">
+          <button class="action-btn ripple" id="copyBtn" title="Copy (Ctrl+C)">
+            📋 Copy
+          </button>
+          <button class="action-btn ripple" id="ttsBtn" title="Text to Speech">
+            🔊 Listen
+          </button>
+          <button class="action-btn ripple" id="downloadTxtBtn">
+            📄 .TXT
+          </button>
+          <button class="action-btn ripple" id="downloadPdfBtn">
+            📑 .PDF
+          </button>
+        </div>
+      </div>
+
+      <!-- Loading -->
+      <div class="loading-overlay" id="loadingOverlay">
+        <div class="loader-ring"></div>
+        <p class="loader-text" id="loaderText">Analyzing text...</p>
+        <div class="loader-steps">
+          <span class="ls active" id="ls1">Spell check</span>
+          <span class="ls" id="ls2">Grammar</span>
+          <span class="ls" id="ls3">Clarity</span>
+          <span class="ls" id="ls4">Done</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Features Section -->
+<section class="features-section" id="features">
+  <div class="section-label">CAPABILITIES</div>
+  <h2 class="section-title">Everything You <span class="gradient-text">Need</span></h2>
+  <p class="section-sub">10 powerful AI correction features in one tool</p>
+
+  <div class="features-grid">
+    <div class="feature-card glass-card fade-in">
+      <div class="feat-icon">🔤</div>
+      <h3>Spell Correction</h3>
+      <p>Instantly fixes typos and misspelled words with contextual awareness</p>
+    </div>
+    <div class="feature-card glass-card fade-in">
+      <div class="feat-icon">📐</div>
+      <h3>Grammar Correction</h3>
+      <p>Identifies and fixes subject-verb agreement, tense, and structural issues</p>
+    </div>
+    <div class="feature-card glass-card fade-in">
+      <div class="feat-icon">，</div>
+      <h3>Punctuation Fix</h3>
+      <p>Adds missing commas, periods, apostrophes, and correct quotation marks</p>
+    </div>
+    <div class="feature-card glass-card fade-in">
+      <div class="feat-icon">🅰️</div>
+      <h3>Capitalization</h3>
+      <p>Fixes sentence starts, proper nouns, and title case automatically</p>
+    </div>
+    <div class="feature-card glass-card fade-in">
+      <div class="feat-icon">🔄</div>
+      <h3>Sentence Restructuring</h3>
+      <p>Reorganizes awkward sentences for natural, logical flow</p>
+    </div>
+    <div class="feature-card glass-card fade-in">
+      <div class="feat-icon">✂️</div>
+      <h3>Remove Repetition</h3>
+      <p>Eliminates repeated words and redundant phrases for cleaner writing</p>
+    </div>
+    <div class="feature-card glass-card fade-in">
+      <div class="feat-icon">📖</div>
+      <h3>Readability Boost</h3>
+      <p>Improves text clarity, conciseness, and reading ease scores</p>
+    </div>
+    <div class="feature-card glass-card fade-in">
+      <div class="feat-icon">💡</div>
+      <h3>Vocabulary Upgrade</h3>
+      <p>Suggests sophisticated alternatives to common, overused words</p>
+    </div>
+    <div class="feature-card glass-card fade-in">
+      <div class="feat-icon">🎭</div>
+      <h3>Informal Detection</h3>
+      <p>Identifies and flags casual language unsuitable for professional use</p>
+    </div>
+    <div class="feature-card glass-card fade-in">
+      <div class="feat-icon">👔</div>
+      <h3>Professional Rewrite</h3>
+      <p>Transforms casual text into polished, business-ready writing</p>
+    </div>
+  </div>
+</section>
+
+<!-- Dashboard / Stats -->
+<section class="dashboard-section" id="dashboard">
+  <div class="section-label">YOUR STATS</div>
+  <h2 class="section-title">Session <span class="gradient-text">Dashboard</span></h2>
+
+  <div class="stats-grid">
+    <div class="stat-card glass-card">
+      <div class="stat-icon">📝</div>
+      <div class="stat-num" data-target="0" id="statWords">0</div>
+      <div class="stat-label">Words Processed</div>
+      <div class="stat-bar"><div class="stat-fill" id="fillWords" style="width:0%"></div></div>
+    </div>
+    <div class="stat-card glass-card">
+      <div class="stat-icon">🔧</div>
+      <div class="stat-num" data-target="0" id="statCorrections">0</div>
+      <div class="stat-label">Corrections Made</div>
+      <div class="stat-bar"><div class="stat-fill" id="fillCorrections" style="width:0%"></div></div>
+    </div>
+    <div class="stat-card glass-card">
+      <div class="stat-icon">🎯</div>
+      <div class="stat-num" id="statAccuracy">—</div>
+      <div class="stat-label">Accuracy Score</div>
+      <div class="stat-bar"><div class="stat-fill" id="fillAccuracy" style="width:0%"></div></div>
+    </div>
+    <div class="stat-card glass-card">
+      <div class="stat-icon">⏱️</div>
+      <div class="stat-num" id="statTime">0s</div>
+      <div class="stat-label">Time Saved</div>
+      <div class="stat-bar"><div class="stat-fill" id="fillTime" style="width:20%"></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- History Section -->
+<section class="history-section" id="history">
+  <div class="section-label">HISTORY</div>
+  <h2 class="section-title">Recent <span class="gradient-text">Corrections</span></h2>
+  <div class="history-list" id="historyList">
+    <div class="history-empty">No corrections yet. Start typing above!</div>
+  </div>
+  <button class="btn-ghost small" id="clearHistoryBtn" style="display:none">Clear History</button>
+</section>
+
+<!-- Keyboard Shortcuts Modal -->
+<div class="modal-overlay" id="shortcutsModal">
+  <div class="modal glass-card">
+    <div class="modal-header">
+      <h3>⌨️ Keyboard Shortcuts</h3>
+      <button class="modal-close" id="closeModal">✕</button>
+    </div>
+    <div class="shortcuts-list">
+      <div class="shortcut"><kbd>Ctrl</kbd>+<kbd>Enter</kbd> Correct Text</div>
+      <div class="shortcut"><kbd>Ctrl</kbd>+<kbd>K</kbd> Show Shortcuts</div>
+      <div class="shortcut"><kbd>Ctrl</kbd>+<kbd>C</kbd> Copy Result</div>
+      <div class="shortcut"><kbd>Ctrl</kbd>+<kbd>Del</kbd> Clear Text</div>
+      <div class="shortcut"><kbd>Ctrl</kbd>+<kbd>D</kbd> Toggle Dark Mode</div>
+      <div class="shortcut"><kbd>Ctrl</kbd>+<kbd>M</kbd> Voice Input</div>
+    </div>
+  </div>
+</div>
+
+<!-- Footer -->
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-logo">
+      <span class="logo-icon">✦</span> AI Autocorrect Pro
+    </div>
+    <p class="footer-copy">
+      Powered by Artificial Intelligence | Developed for Hackathon 2026
+    </p>
+    <div class="footer-links">
+      <span>Privacy</span>
+      <span>Terms</span>
+      <span>Contact</span>
+    </div>
+  </div>
+</footer>
+
+<!-- Shortcut hint -->
+<div class="shortcut-hint" id="shortcutHint">
+  Press <kbd>Ctrl+K</kbd> for shortcuts
+</div>
+
+<script src="/static/js/app.js"></script>
+</body>
+</html>
